@@ -1,5 +1,8 @@
 <div align="center">
-
+2025-09-05
+Added a Gradio script from Fahd Mirza
+https://www.youtube.com/watch?v=woZK76EJ47k
+  
 ## 🎙️ VibeVoice: A Frontier Long Conversational Text-to-Speech Model
 [![Project Page](https://img.shields.io/badge/Project-Page-blue?logo=microsoft)](https://microsoft.github.io/VibeVoice)
 [![Hugging Face](https://img.shields.io/badge/HuggingFace-Collection-orange?logo=huggingface)](https://huggingface.co/collections/microsoft/vibevoice-68a2ef24a875c44be47b034f)
