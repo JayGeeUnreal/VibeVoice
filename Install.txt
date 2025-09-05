@@ -1,0 +1,20 @@
+Install
+Python 3.10.18 ?
+python -m venv vibevoice
+vibevoice\Scripts\activate
+
+pip3 install torch
+pip3 install accelerate==1.6.0
+pip3 install transformers==4.51.3
+pip3 install llvmlite>=0.40.0
+pip3 install numba>=0.57.0
+pip3 install diffusers
+pip3 install tqdm
+pip3 install numpy
+pip3 install scipy
+pip3 install librosa
+pip3 install ml-collection
+pip3 install absl-py
+pip3 install gradio
+pip3 install av
+pip3 install aiortc
