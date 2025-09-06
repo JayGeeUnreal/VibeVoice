@@ -20,3 +20,4 @@ pip3 install gradio
 pip3 install av
 pip3 install aiortc
 pip3 install hf_xet
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu129
