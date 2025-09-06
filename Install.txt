@@ -1,10 +1,12 @@
+Triton Windows wheels - https://huggingface.co/madbuda/triton-windows-builds
+flash-attn Windows wheels - https://huggingface.co/lldacing/flash-attention-windows-wheel
 Install
-Python 3.10.18 ?
+Python 3.12.10
 git clone https://github.com/JayGeeUnreal/VibeVoice.git
 cd vibevoice
 python -m venv vibevoice
 vibevoice\Scripts\activate
-pip3 install torch
+
 pip3 install accelerate==1.6.0
 pip3 install transformers==4.51.3
 pip3 install llvmlite>=0.40.0
@@ -20,4 +22,6 @@ pip3 install gradio
 pip3 install av
 pip3 install aiortc
 pip3 install hf_xet
-pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu129
+pip install torch==2.7.0 torchvision==0.22.0 torchaudio==2.7.0 --index-url https://download.pytorch.org/whl/cu128
+pip install https://huggingface.co/madbuda/triton-windows-builds/resolve/main/triton-3.0.0-cp312-cp312-win_amd64.whl
+pip install https://huggingface.co/lldacing/flash-attention-windows-wheel/resolve/main/flash_attn-2.7.4.post1%2Bcu128torch2.7.0cxx11abiFALSE-cp312-cp312-win_amd64.whl?download=true
