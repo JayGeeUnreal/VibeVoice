@@ -387,7 +387,8 @@ class VibeVoiceChat:
             
             # Use torch.cuda.amp for mixed precision if available
             if self.device == "cuda" and torch.cuda.is_available():
-                with torch.cuda.amp.autocast(dtype=torch.bfloat16):
+                # with torch.cuda.amp.autocast(dtype=torch.bfloat16):
+                with torch.amp.autocast('cuda', dtype=torch.bfloat16):
                     outputs = self.model.generate(
                         **inputs,
                         max_new_tokens=None,
