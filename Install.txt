@@ -1,3 +1,5 @@
+nvcc --version
+
 Triton Windows wheels - https://huggingface.co/madbuda/triton-windows-builds
 flash-attn Windows wheels - https://huggingface.co/lldacing/flash-attention-windows-wheel
 Install
