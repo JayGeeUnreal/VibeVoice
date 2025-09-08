@@ -16,39 +16,14 @@ from transformers import set_seed
 import sys
 import pygame # Import Pygame for audio playback
 
-# --- Clone and setup VibeVoice if not already present ---
+# The automatic setup block has been removed.
+# You must manually ensure VibeVoice is cloned and installed.
+# 1. git clone https://github.com/vibevoice-community/VibeVoice
+# 2. cd VibeVoice
+# 3. pip install -e .
+# 4. pip install wheel flash-attn --no-build-isolation
+
 vibevoice_dir = Path('./VibeVoice')
-if not vibevoice_dir.exists():
-    print("Cloning VibeVoice repository...")
-    try:
-        # Check if git is available
-        subprocess.run(['git', '--version'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        subprocess.run(['git', 'clone', 'https://github.com/vibevoice-community/VibeVoice'], check=True)
-        print("Installing VibeVoice...")
-        original_cwd = os.getcwd()
-        os.chdir(vibevoice_dir)
-        
-        subprocess.run(['pip', 'install', '-e', '.'], check=True)
-        print("Installing wheel (required for flash-attn)...")
-        subprocess.run(['pip', 'install', 'wheel'], check=True)
-        print("Installing flash-attn...")
-        subprocess.run(['pip', 'install', 'flash-attn', '--no-build-isolation'], check=True)
-        print("✓ VibeVoice and dependencies installed successfully.")
-        os.chdir(original_cwd)
-        
-    except FileNotFoundError:
-        print("Error: Git command not found. Please install Git and ensure it's in your PATH.")
-        exit(1)
-    except subprocess.CalledProcessError as e:
-        print(f"Error during VibeVoice installation: {e}")
-        print("Please ensure Git is installed and you have an internet connection.")
-        print("You may need to manually clone and install VibeVoice:")
-        print("git clone https://github.com/vibevoice-community/VibeVoice")
-        print("cd VibeVoice && pip install -e . && pip install wheel flash-attn --no-build-isolation")
-        exit(1)
-    except OSError as e:
-        print(f"Error changing directory during installation: {e}")
-        exit(1)
 
 if str(vibevoice_dir) not in sys.path:
     sys.path.insert(0, str(vibevoice_dir))
@@ -822,27 +797,24 @@ def main():
     elif args.default_prompt_file and not initial_prompt_content:
         print(f"✗ Failed to load default prompt from: {args.default_prompt_file} (file might be empty or inaccessible)")
 
+    # --- Initialize VibeVoiceChat instance ---
+    try:
+        chat_instance = VibeVoiceChat(
+            model_path=args.model_path,
+            device=args.device,
+            inference_steps=args.inference_steps,
+            default_voice_path=args.default_voice
+        )
+    except Exception as e:
+        print(f"Fatal Error: Could not initialize VibeVoiceChat. {e}")
+        exit(1)
+
     # --- Decide whether to launch Gradio or run generation directly ---
     if args.default_prompt_file and initial_prompt_content:
         print("\n--- Running Generation Directly (No Gradio UI) ---")
-        model_path = args.model_path
-        device = args.device
-        inference_steps = args.inference_steps
-        default_voice_path = args.default_voice
         prompt_text = initial_prompt_content
         cfg_scale_direct_gen = args.cfg_scale
         
-        try:
-            chat_instance = VibeVoiceChat(
-                model_path=model_path,
-                device=device,
-                inference_steps=inference_steps,
-                default_voice_path=default_voice_path
-            )
-        except Exception as e:
-            print(f"Fatal Error: Could not initialize VibeVoiceChat. {e}")
-            exit(1)
-            
         available_voices_list = list(chat_instance.available_voices.keys())
         selected_voice_1 = available_voices_list[0] if available_voices_list and available_voices_list[0] != "Default" else "Default"
         selected_voice_2 = available_voices_list[1] if len(available_voices_list) > 1 and available_voices_list[1] != "Default" else selected_voice_1
