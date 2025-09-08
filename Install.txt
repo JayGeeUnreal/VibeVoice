@@ -1,23 +1,15 @@
-!! OBS NOT FULLY TESTED!!
-This is just one way to do it, there are better ways for sure but this is how i made it work..
-!! Use at your own risc !!
-_______________________________________________________________________________________________
 nvcc --version
-https://pytorch.org/get-started/locally/
+
 Triton Windows wheels - https://huggingface.co/madbuda/triton-windows-builds
 flash-attn Windows wheels - https://huggingface.co/lldacing/flash-attention-windows-wheel
-https://realpython.com/intro-to-pyenv/
-_____________________________________________________________________________________________________________________________________
 Install
-
-Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win/master/pyenv-win/install-pyenv-win.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
-pyenv install 3.12.10
-pyenv local 3.12.10
+Python 3.12.10
 git clone https://github.com/JayGeeUnreal/VibeVoice.git
 cd vibevoice
 python -m venv vibevoice
 vibevoice\Scripts\activate
 
+pip3 install accelerate==1.6.0
 pip3 install transformers==4.51.3
 pip3 install llvmlite>=0.40.0
 pip3 install numba>=0.57.0
@@ -32,11 +24,9 @@ pip3 install gradio
 pip3 install av
 pip3 install aiortc
 pip3 install hf_xet
-pip install pygame
 pip install torch==2.7.0 torchvision==0.22.0 torchaudio==2.7.0 --index-url https://download.pytorch.org/whl/cu128
-pip install https://huggingface.co/madbuda/triton-windows-builds/resolve/main/triton-3.0.0-cp312-cp312-win_amd64.whl
-pip install https://huggingface.co/lldacing/flash-attention-windows-wheel/resolve/main/flash_attn-2.7.4.post1%2Bcu128torch2.7.0cxx11abiFALSE-cp312-cp312-win_amd64.whl?download=true
-# pip install apex
-__________________________________________________________________________________
-For testing nogradio.py you can run something like
- python nogradio.py --default_prompt_file my_startup_prompt.txt --default_voice demo/voices/en-Alice_woman.wav
+Dont use for now : pip install https://huggingface.co/madbuda/triton-windows-builds/resolve/main/triton-3.0.0-cp312-cp312-win_amd64.whl
+Dont use for now : pip install https://huggingface.co/lldacing/flash-attention-windows-wheel/resolve/main/flash_attn-2.7.4.post1%2Bcu128torch2.7.0cxx11abiFALSE-cp312-cp312-win_amd64.whl?download=true
+
+To test without Gradio you can run something like this
+ python nogradio.py --default_prompt_file my_startup_prompt.txt --default_voice demo/voices/en-Alice_woman.wav --cfg_scale 2.0

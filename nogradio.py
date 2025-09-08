@@ -15,9 +15,7 @@ from transformers.utils import logging
 from transformers import set_seed
 import sys
 import pygame # Import Pygame for audio playback
-################################################
-#       --- Argument Parsing Line 767---       #
-################################################
+
 # --- Clone and setup VibeVoice if not already present ---
 vibevoice_dir = Path('./VibeVoice')
 if not vibevoice_dir.exists():
@@ -802,7 +800,7 @@ def parse_args():
     parser.add_argument(
         "--cfg_scale",
         type=float,
-        default=2.0,
+        default=1.3,
         help="Classifier-Free Guidance scale (higher = more adherence to text, default: 1.3)",
     )
     return parser.parse_args()
