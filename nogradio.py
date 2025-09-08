@@ -14,12 +14,16 @@ from typing import Iterator, Dict, Any
 from transformers.utils import logging
 from transformers import set_seed
 import sys
-
+import pygame # Import Pygame for audio playback
+################################################
+#       --- Argument Parsing Line 767---       #
+################################################
 # --- Clone and setup VibeVoice if not already present ---
 vibevoice_dir = Path('./VibeVoice')
 if not vibevoice_dir.exists():
     print("Cloning VibeVoice repository...")
     try:
+        # Check if git is available
         subprocess.run(['git', '--version'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         subprocess.run(['git', 'clone', 'https://github.com/vibevoice-community/VibeVoice'], check=True)
         print("Installing VibeVoice...")
@@ -795,14 +799,12 @@ def parse_args():
         default=None,
         help="Path to a text file (.txt) to load as the initial prompt in the message box.",
     )
-    # --- ADDED ARGUMENT FOR CFG SCALE ---
     parser.add_argument(
         "--cfg_scale",
         type=float,
-        default=2.0, # Default value if not provided
-        help="Classifier-Free Guidance scale (higher = more adherence to text, default: 2.0)",
+        default=2.0,
+        help="Classifier-Free Guidance scale (higher = more adherence to text, default: 1.3)",
     )
-    # --- END ADDITION ---
     return parser.parse_args()
 
 # --- Main Function ---
@@ -830,7 +832,7 @@ def main():
         inference_steps = args.inference_steps
         default_voice_path = args.default_voice
         prompt_text = initial_prompt_content
-        cfg_scale_direct_gen = args.cfg_scale # Use the value from the command line
+        cfg_scale_direct_gen = args.cfg_scale
         
         try:
             chat_instance = VibeVoiceChat(
@@ -873,6 +875,41 @@ def main():
                 sample_rate, audio_array = final_audio_data
                 sf.write(output_filepath, audio_array, sample_rate)
                 print(f"✓ Audio successfully generated and saved to: {output_filepath}")
+                
+                # --- PLAYBACK LOGIC ---
+                try:
+                    # Initialize Pygame Mixer
+                    pygame.mixer.init()
+                    print("Pygame mixer initialized.")
+                    
+                    # Load the audio file
+                    audio_sound = pygame.mixer.Sound(output_filepath)
+                    print(f"Audio file '{output_filepath}' loaded into Pygame Sound object.")
+                    
+                    # Play the audio
+                    audio_sound.play()
+                    print("Playing audio...")
+                    
+                    # Keep the script running while audio plays
+                    while pygame.mixer.get_busy():
+                        pygame.time.Clock().tick(10) # Small delay to prevent high CPU usage
+
+                    print("Audio playback finished.")
+                    
+                except pygame.error as pe:
+                    print(f"Pygame error during playback: {pe}")
+                    print("Please ensure Pygame is installed (`pip install pygame`) and your audio drivers are working correctly.")
+                except FileNotFoundError:
+                    print(f"Error: Audio file not found at {output_filepath} for playback.")
+                except Exception as e:
+                    print(f"An unexpected error occurred during Pygame playback: {e}")
+                finally:
+                    # Quit the mixer cleanly
+                    if pygame.mixer.get_init():
+                        pygame.mixer.quit()
+                        print("Pygame mixer quit.")
+                # --- END PLAYBACK LOGIC ---
+
             else:
                 print("✗ Audio generation failed, no audio data produced.")
 
@@ -904,7 +941,7 @@ def main():
         print(f"   Inference steps: {args.inference_steps}")
         print(f"   Default voice path: {args.default_voice if args.default_voice else 'Not set'}")
         print(f"   Default prompt file: {args.default_prompt_file if args.default_prompt_file else 'Not set'}")
-        print(f"   Default CFG Scale: {args.cfg_scale}") # Print the CFG scale used for UI default
+        print(f"   Default CFG Scale: {args.cfg_scale}")
         print(f"   Available voices: {len(chat_instance.available_voices)}")
 
         if chat_instance.device == "cpu":
