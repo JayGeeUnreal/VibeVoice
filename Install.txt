@@ -32,7 +32,11 @@ pip3 install gradio
 pip3 install av
 pip3 install aiortc
 pip3 install hf_xet
+pip install pygame
 pip install torch==2.7.0 torchvision==0.22.0 torchaudio==2.7.0 --index-url https://download.pytorch.org/whl/cu128
 pip install https://huggingface.co/madbuda/triton-windows-builds/resolve/main/triton-3.0.0-cp312-cp312-win_amd64.whl
 pip install https://huggingface.co/lldacing/flash-attention-windows-wheel/resolve/main/flash_attn-2.7.4.post1%2Bcu128torch2.7.0cxx11abiFALSE-cp312-cp312-win_amd64.whl?download=true
-pip install apex
+# pip install apex
+__________________________________________________________________________________
+For testing nogradio.py you can run something like
+ python nogradio.py --default_prompt_file my_startup_prompt.txt --default_voice demo/voices/en-Alice_woman.wav
