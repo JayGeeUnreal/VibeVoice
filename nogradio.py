@@ -16,12 +16,7 @@ from transformers import set_seed
 import sys
 import pygame # Import Pygame for audio playback
 
-# The automatic setup block has been removed.
-# You must manually ensure VibeVoice is cloned and installed.
-# 1. git clone https://github.com/vibevoice-community/VibeVoice
-# 2. cd VibeVoice
-# 3. pip install -e .
-# 4. pip install wheel flash-attn --no-build-isolation
+
 
 vibevoice_dir = Path('./VibeVoice')
 
